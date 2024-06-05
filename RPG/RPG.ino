@@ -31,12 +31,13 @@ void setup() {
   pinMode(ledamarelov, OUTPUT);
   pinMode(ledv, OUTPUT);
   pinMode(ledh, OUTPUT);
-  Serial.println("Instrucoes:"); //Instrução do jogo
+  Serial.println("Instrucoes:");  //Instrução do jogo
   Serial.println("Quando o jogo iniciar, aperte o botao do heroi e do vilao alternadamente para rolar os dados, comecando com o do heroi.");
   Serial.println("a diferenca dos dados sera o dano causado naquele que tirou o menor numero");
   Serial.println("Ganha aquele que tornar a vida do oponente igual ou menor que zero");
   Serial.println();
   Serial.println("aperte o botao do lado do led azul (heroi) para iniciar o jogo!");
+  Serial.println("-------------------------------------------------------------");
 }
 
 void loop() {  //Faz o jogo iniciar quando o primeiro botao for acionado(herói)
@@ -72,7 +73,7 @@ void configurarVida_vilao() {
 
 void jogo() {
   if (status03 == true) {
-    Serial.print("Digite a vida do heroi: ");  
+    Serial.print("Digite a vida do heroi: ");
     while (status03 == true) {
       configurarVida_heroi();
     }
@@ -86,13 +87,14 @@ void jogo() {
   while (status02 == true) {
     Serial.println("-------------------------------------------------------------");
     Serial.println("aperte o botão do herói para rolar o dado");
+    Serial.println("-------------------------------------------------------------");
     status02 = false;
   }
 
   // Gera um número aleatório entre 1 a 6 para o herói
   if (digitalRead(botao_01) == 1 && status == false) {
     status = true;
-    dado_heroi = random(1, 7); 
+    dado_heroi = random(1, 7);
     Serial.print("valor do dado do heroi: ");
     Serial.println(dado_heroi);
     for (int i = 1; i <= dado_heroi; i++) {
@@ -130,14 +132,20 @@ void jogo() {
         digitalWrite(ledv, 0);
         delay(300);
       }
+      Serial.print("Vida atual do heroi: ");
+      Serial.println(vida_heroi);
       Serial.print("Vida atual do vilao: ");
       if (vida_vilao < 0) {
         Serial.println("0");
-      } else {
+      } 
+      else {
         Serial.println(vida_vilao);
       }
-      Serial.print("Vida atual do heroi: ");
-      Serial.println(vida_heroi);
+
+      if (vida_vilao > 0) {
+        Serial.println("-------------------------------------------------------------");
+        Serial.println("aperte o botão do herói para rolar o dado");
+      }
     }
 
     //dano na vida do heroi
@@ -157,11 +165,17 @@ void jogo() {
       Serial.print("Vida atual do heroi: ");
       if (vida_heroi < 0) {
         Serial.println("0");
-      } else {
+      } 
+      else {
         Serial.println(vida_heroi);
       }
+      if (vida_heroi > 0) {
+        Serial.println("-------------------------------------------------------------");
+        Serial.println("aperte o botão do herói para rolar o dado");
+      }
 
-    } else {
+    } 
+    else {
       Serial.println("Os dados sao iguais, ninguem recebe dano!");
     }
     Serial.println("-------------------------------------------------------------");
@@ -178,6 +192,7 @@ void jogo() {
       delay(300);
     }
     Serial.println("Aperte o botao ao lado do heroi para reiniciar o jogo!");
+    Serial.println("-------------------------------------------------------------");
     ganhador();
   } 
   else if (vida_vilao <= 0) {
@@ -190,6 +205,7 @@ void jogo() {
       delay(300);
     }
     Serial.println("Aperte o botao ao lado do heroi para reiniciar o jogo!");
+    Serial.println("-------------------------------------------------------------");
     ganhador();
   }
 }
