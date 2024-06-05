@@ -29,7 +29,7 @@ void setup() {
   pinMode(buzzer, OUTPUT);
   pinMode(ledamareloh, OUTPUT);
   pinMode(ledamarelov, OUTPUT);
-  Serial.println("Instrucoes:");
+  Serial.println("Instrucoes:"); //Instrução do jogo
   Serial.println("Quando o jogo iniciar, aperte o botao do heroi e do vilao alternadamente para rolar os dados, comecando com o do heroi.");
   Serial.println("a diferenca dos dados sera o dano causado naquele que tirou o menor numero");
   Serial.println("Ganha aquele que tornar a vida do oponente igual ou menor que zero");
@@ -37,7 +37,7 @@ void setup() {
   Serial.println("aperte o botao do lado do led azul (heroi) para iniciar o jogo!");
 }
 
-void loop() {  //Faz o jogo iniciar quando o primeiro botao for acionado
+void loop() {  //Faz o jogo iniciar quando o primeiro botao for acionado(herói)
   if (digitalRead(botao_01) == 1 && status_jogo == false || status_jogo == true) {
     status_jogo = true;
     jogo();
@@ -46,9 +46,8 @@ void loop() {  //Faz o jogo iniciar quando o primeiro botao for acionado
 
 
 void configurarVida_heroi() {
-
   while (Serial.available() > 0) {  // espera até que algo seja digitado
-    vida = Serial.parseInt();       //recebe valores inteiro que vc digitar
+    vida = Serial.parseInt();       //recebe valores inteiro que vc digitar para o herói
     if (vida > 0) {
       vida_heroi = vida;
       status03 = false;
@@ -59,7 +58,7 @@ void configurarVida_heroi() {
 
 void configurarVida_vilao() {
   while (Serial.available() > 0) {  // espera até que algo seja digitado
-    vida02 = Serial.parseInt();     //recebe valores inteiro que vc digitar
+    vida02 = Serial.parseInt();     //recebe valores inteiro que vc digitar para o vilão
     if (vida02 > 0) {
       vida_vilao = vida02;
       status04 = false;
@@ -71,7 +70,7 @@ void configurarVida_vilao() {
 
 void jogo() {
   if (status03 == true) {
-    Serial.print("Digite a vida do heroi: ");
+    Serial.print("Digite a vida do heroi: ");  
     while (status03 == true) {
       configurarVida_heroi();
     }
@@ -88,10 +87,10 @@ void jogo() {
     status02 = false;
   }
 
-
+  // Gera um número aleatório entre 1 a 6 para o herói
   if (digitalRead(botao_01) == 1 && status == false) {
     status = true;
-    dado_heroi = random(1, 7);  // Gera um número aleatório entre 1 e 6
+    dado_heroi = random(1, 7); 
     Serial.print("valor do dado do heroi: ");
     Serial.println(dado_heroi);
     for (int i = 1; i <= dado_heroi; i++) {
@@ -103,6 +102,7 @@ void jogo() {
     delay(100);
   }
 
+  //Gera um número aleatório entre 1 a 6 para o vilão
   if (digitalRead(botao_02) == 1 && status == true) {
     status = false;
     dado_vilao = random(1, 7);
@@ -165,28 +165,29 @@ void jogo() {
     Serial.println("-------------------------------------------------------------");
   }
 
-
+  //Comunica aos jogadores quem venceu e toca sua respectiva música, além de piscar os leds amarelos para o vencedor
   if (vida_heroi <= 0) {
     Serial.println("A vitoria foi do vilao");
     musica_vilao();
-    Serial.println("Aperte o botao ao lado do heroi para reiniciar o jogo!");
-    for (int i = 0; i <= 3; i++) {
+    for (int i = 0; i <= 2; i++) {
       digitalWrite(ledamarelov, 1);
       delay(300);
       digitalWrite(ledamarelov, 0);
       delay(300);
     }
+    Serial.println("Aperte o botao ao lado do heroi para reiniciar o jogo!");
     ganhador();
-  } else if (vida_vilao <= 0) {
+  } 
+  else if (vida_vilao <= 0) {
     Serial.println("A vitoria foi do heroi");
     musica_heroi();
-    Serial.println("Aperte o botao ao lado do heroi para reiniciar o jogo!");
-    for (int i = 0; i <= 3; i++) {
+    for (int i = 0; i <= 2; i++) {
       digitalWrite(ledamareloh, 1);
       delay(300);
       digitalWrite(ledamareloh, 0);
       delay(300);
     }
+    Serial.println("Aperte o botao ao lado do heroi para reiniciar o jogo!");
     ganhador();
   }
 }
