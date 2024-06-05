@@ -29,6 +29,8 @@ void setup() {
   pinMode(buzzer, OUTPUT);
   pinMode(ledamareloh, OUTPUT);
   pinMode(ledamarelov, OUTPUT);
+  pinMode(ledv, OUTPUT);
+  pinMode(ledh, OUTPUT);
   Serial.println("Instrucoes:"); //Instrução do jogo
   Serial.println("Quando o jogo iniciar, aperte o botao do heroi e do vilao alternadamente para rolar os dados, comecando com o do heroi.");
   Serial.println("a diferenca dos dados sera o dano causado naquele que tirou o menor numero");
